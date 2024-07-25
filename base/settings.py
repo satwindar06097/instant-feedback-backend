@@ -94,11 +94,11 @@ database_url = os.environ.get('DATABASE_URL', "postgresql://instant_feedback_use
 DATABASES['default'] = dj_database_url.parse(database_url, conn_max_age=600)
 
 # Check if connected to the database
-try:
-    django.db.connection.cursor()
-    print("Connected to the database!")
-except django.db.DatabaseError as e:
-    print(f"Error connecting to the database: {e}")
+# try:
+#     django.db.connection.cursor()
+#     print("Connected to the database!")
+# except django.db.DatabaseError as e:
+#     print(f"Error connecting to the database: {e}")
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators

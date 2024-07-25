@@ -6,5 +6,5 @@ urlpatterns = [
     path('posts/reviews/<slug:slug>/', views.get_post_reviews, name='post-reviews'),
     path('posts/create/reviews/<slug:slug>/', views.create_review, name='create-review'),
     path('posts/delete/<slug:slug>/', views.delete_post, name='delete-post'),
-    path('posts/review/delete/<int:my_id>/', views.delete_review, name='delete-post'),
+    path('posts/review/delete/<int:my_id>/', views.delete_review, name='delete-review'),
 ]

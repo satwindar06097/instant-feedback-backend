@@ -38,6 +38,7 @@ class UserSerializerWithToken(UserSerializer):
 class ReviewSerializer(serializers.ModelSerializer):
     video_review = serializers.SerializerMethodField()
     customer_photo = serializers.SerializerMethodField()
+    review_image = serializers.SerializerMethodField()
 
     class Meta:
         model = Review
@@ -77,5 +78,7 @@ class PostSerializer(serializers.ModelSerializer):
     def get_image(self, obj):
         request = self.context.get('request')
         if obj.image:
-            return request.build_absolute_uri(obj.image.url)
+            image_url = request.build_absolute_uri(obj.image.url)
+            print(f"Generated Image URL: {image_url}")  # Log the generated URL
+            return image_url
         return None

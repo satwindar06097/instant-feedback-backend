@@ -86,12 +86,15 @@ def get_post_reviews(request, slug):
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
 def delete_review(request, my_id):
+    print(f"Trying to delete review with ID: {my_id}")  # Debugging line
     try:
         review = Review.objects.get(my_id=my_id)
     except Review.DoesNotExist:
+        print("Review not found")  # Debugging line
         return Response({'detail': 'Review not found.'}, status=status.HTTP_404_NOT_FOUND)
 
     if review.post.user != request.user and not request.user.is_staff:
+        print("Permission denied")  # Debugging line
         return Response({'detail': 'You do not have permission to delete this review.'}, status=status.HTTP_403_FORBIDDEN)
     
     review.delete()
