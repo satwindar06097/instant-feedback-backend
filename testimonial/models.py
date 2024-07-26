@@ -5,8 +5,13 @@ import uuid
 from django.utils.text import slugify
 from django_resized import ResizedImageField
 from cloudinary_storage.storage import VideoMediaCloudinaryStorage
-from cloudinary_storage.validators import validate_video
 
+from django.core.exceptions import ValidationError
+
+def simple_video_validator(file):
+    if not file.name.endswith(('.mp4', '.mov', '.avi')):
+        raise ValidationError('Unsupported video file format.')
+    
 class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
@@ -36,7 +41,13 @@ class Review(models.Model):
     customer_photo = ResizedImageField(  quality=80,upload_to='customer_images/', null=True, blank=True)
     review_image = ResizedImageField( quality=80,upload_to='review_images/', null=True, blank=True)
     text_review = models.TextField(null=True, blank=True)
-    video_review = models.FileField(upload_to='review_videos/', null=True, blank=True,storage=VideoMediaCloudinaryStorage(),validators=[validate_video])
+    video_review = models.FileField(
+        upload_to='review_videos/',
+        null=True,
+        blank=True,
+        storage=VideoMediaCloudinaryStorage(),
+        validators=[simple_video_validator]
+    )  
     created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
