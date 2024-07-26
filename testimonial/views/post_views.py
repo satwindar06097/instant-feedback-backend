@@ -4,6 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from testimonial.models import Post, Review
 from testimonial.serializers import PostSerializer, ReviewSerializer
+from rest_framework.exceptions import NotFound
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -40,6 +41,16 @@ def get_user_posts(request):
     user = request.user
     posts = Post.objects.filter(user=user).order_by('-created_at')
     serializer = PostSerializer(posts, many=True, context={'request': request})
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def get_single_post(request, slug):
+    try:
+        post = Post.objects.get(slug=slug)
+    except Post.DoesNotExist:
+        raise NotFound(detail="Post not found.")
+    
+    serializer = PostSerializer(post, context={'request': request})
     return Response(serializer.data)
 
 @api_view(['POST'])

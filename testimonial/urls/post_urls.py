@@ -3,6 +3,7 @@ from testimonial.views import post_views as views
 urlpatterns = [
     path('posts/all/', views.get_user_posts, name='user-posts'),
     path('posts/create/', views.create_post, name='create-post'),
+    path('posts/single/<slug:slug>', views.get_single_post, name='single-post'),
     path('posts/reviews/<slug:slug>/', views.get_post_reviews, name='post-reviews'),
     path('posts/create/reviews/<slug:slug>/', views.create_review, name='create-review'),
     path('posts/delete/<slug:slug>/', views.delete_post, name='delete-post'),
